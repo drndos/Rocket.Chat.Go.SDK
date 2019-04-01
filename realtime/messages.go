@@ -203,7 +203,7 @@ func getMessageFromDocument(arg *gabs.Container) *models.Message {
 				Timestamp:         stringOrZero(attachment.Path("ts").Data()),
 				Title:             stringOrZero(attachment.Path("title").Data()),
 				TitleLink:         stringOrZero(attachment.Path("title_link").Data()),
-				TitleLinkDownload: stringOrZero(attachment.Path("title_link_download").Data()),
+ 				TitleLinkDownload: booleanOrFalse(attachment.Path("title_link_download").Data()),
 				ImageURL:          stringOrZero(attachment.Path("image_url").Data()),
 
 				AuthorName:        stringOrZero(arg.Path("u.name").Data()),
@@ -229,6 +229,14 @@ func getMessageFromDocument(arg *gabs.Container) *models.Message {
 		},
 		Attachments: attachments,
 	}
+}
+
+func booleanOrFalse(i interface{}) bool {
+	if i == nil {
+		return false
+	}
+
+	return i.(bool)
 }
 
 func stringOrZero(i interface{}) string {
